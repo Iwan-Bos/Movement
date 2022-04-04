@@ -23,7 +23,7 @@ namespace Movement
 	class MovingBall : SpriteNode
 	{
 		// your private fields here (add Velocity)
-		private Vector2 velocity = new Vector2(500,500);
+		private Vector2 Velocity = new Vector2(500,500);
 
 		// constructor + call base constructor
 		public MovingBall() : base("resources/bigball.png")
@@ -43,8 +43,8 @@ namespace Movement
 		private void Move(float deltaTime)
 		{
 			// Move
-			Position.X += velocity.X * deltaTime;
-			Position.Y += velocity.Y * deltaTime;
+			Position.X += Velocity.X * deltaTime;
+			Position.Y += Velocity.Y * deltaTime;
 		}
 
 		private void BounceEdges()
@@ -56,17 +56,17 @@ namespace Movement
 
 			// Bouncing Edges
 			if (Position.X > scr_width) {
-				velocity.X *= -1;
+				Velocity.X *= -1;
 			} 
 			else if (Position.X < 0) {
-				velocity.X *= -1;
+				Velocity.X *= -1;
 			}
 
 			if (Position.Y > scr_height) {
-				velocity.Y *= -1;
+				Velocity.Y *= -1;
 			} 
 			else if (Position.Y < 0) {
-				velocity.Y *= -1;
+				Velocity.Y *= -1;
 			}
 		}
 
