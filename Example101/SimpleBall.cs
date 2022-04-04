@@ -43,12 +43,11 @@ namespace Movement
 		// your own private methods
 		private void Move(float deltaTime)
 		{
-			// TODO implement
+			// Move
 			Position.X += velocityX * deltaTime;
 			Position.Y += velocityY * deltaTime;
 		}
-
-		private void BounceEdges()
+		private void BounceEdges() 
 		{
 			float scr_width = Settings.ScreenSize.X;
 			float scr_height = Settings.ScreenSize.Y;
@@ -71,6 +70,5 @@ namespace Movement
 			}
 
 		}
-
 	}
 }
