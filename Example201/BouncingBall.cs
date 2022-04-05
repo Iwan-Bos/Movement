@@ -22,8 +22,13 @@ namespace Movement
 {
 	class BouncingBall : SpriteNode
 	{
-		// your private fields here (add Velocity, Acceleration, addForce method)
+		// your private fields here (add Velocity, Acceleration, AddForce method)
+		Vector2 Velocity = new Vector2(0,0);
+		Vector2 Acceleration = new Vector2(0,0);
 
+		Vector2 wind = new Vector2(0.0f, 0.0f);
+		Vector2 gravity = new Vector2(0.0f, 980.0f);
+		float mass = 1f;
 
 		// constructor + call base constructor
 		public BouncingBall() : base("resources/ball.png")
@@ -35,26 +40,27 @@ namespace Movement
 		// Update is called every frame
 		public override void Update(float deltaTime)
 		{
-			Fall(deltaTime);
+			Position += Velocity * deltaTime;
+			Move(deltaTime);
 			BounceEdges();
 		}
 
 		// your own private methods
-		private void Fall(float deltaTime)
+		private void Move(float deltaTime)
 		{
-			// TODO implement
-			// Position += Velocity * deltaTime;
-
-			Vector2 wind = new Vector2(1.8f, 0.0f);
-			Vector2 gravity = new Vector2(0.0f, 9.8f);
-
+			if (Raylib.IsMouseButtonDown(MouseButton.MOUSE_BUTTON_RIGHT)) { wind.X = 1000f; }
+			if (Raylib.IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT)) { wind.X = -1000f; }
 			AddForce(wind);
 			AddForce(gravity);
+			Velocity += (Acceleration * mass) * deltaTime;
+			Acceleration = Vector2.Zero;
+			wind.X = 0f;
 		}
+		
 
 		private void AddForce(Vector2 force)
 		{
-			// TODO implement
+			Acceleration += force;
 		}
 
 		private void BounceEdges()
@@ -64,10 +70,18 @@ namespace Movement
 			float spr_width = TextureSize.X;
 			float spr_heigth = TextureSize.Y;
 
-			// TODO implement...
-			if (Position.X > scr_width)
-			{
-				// ...
+			if (Position.X > scr_width) {
+				Velocity.X *= -1;
+			} 
+			else if (Position.X < 0) {
+				Velocity.X *= -1;
+			}
+
+			if (Position.Y > scr_height) {
+				Velocity.Y *= -1;
+			} 
+			else if (Position.Y < 0) {
+				Velocity.Y *= -1;
 			}
 		}
 
