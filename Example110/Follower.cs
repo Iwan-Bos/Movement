@@ -21,10 +21,9 @@ Methods:
 
 namespace Movement
 {
-	class Follower : SpriteNode
+	class Follower : MoverNode
 	{
 		// your private fields here (add Velocity, Acceleration, and MaxSpeed)
-		private Vector2 Acceleration = new Vector2();
 		private Vector2 MaxSpeed = new Vector2();
 
 		// constructor + call base constructor
@@ -38,16 +37,10 @@ namespace Movement
 		public override void Update(float deltaTime)
 		{
 			Follow(deltaTime);
+			Move(deltaTime);
 		}
 
 		// your own private methods
-		private void Follow(float deltaTime)
-		{
-			Vector2 mouse = Raylib.GetMousePosition();
-			Vector2 direction = Vector2.Subtract(mouse, Position);
-			Vector2.Normalize(direction);
-			direction *= 3;
-			Position += direction * deltaTime;
-		}
+		
 	}
 }

@@ -18,7 +18,7 @@ namespace Movement
 		private Node parent;
 
 		// Node.TransformNode sets these values after transform.
-		private Vector2 worldPosition;
+		public Vector2 worldPosition;
 		private float worldRotation;
 		private Vector2 worldScale;
 
