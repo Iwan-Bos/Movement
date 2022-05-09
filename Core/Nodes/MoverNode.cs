@@ -7,6 +7,7 @@ namespace Movement
 	{
 		public Vector2 Velocity;
 		public Vector2 Acceleration;
+		public float Maxspeed;
 		private float mass;
 
 		// public Vector2 Velocity { 
@@ -27,6 +28,7 @@ namespace Movement
 		{
 			Velocity = new Vector2(0, 0);
 			Acceleration = new Vector2(0, 0);
+			Maxspeed = 700.0f;
 			mass = 1.0f;
 		}
 
@@ -41,11 +43,30 @@ namespace Movement
 			// Motion 101. Apply the rules.
 			Velocity += Acceleration * deltaTime;
 			Position += Velocity * deltaTime;
+			// set the X or Y Velocity to a set value if it passes the maxspeed.
+			MaxspeedCheck();
 			// Reset acceleration
 			Acceleration *= 0.0f;
-
-			// output Velocity
-			System.Console.WriteLine(Velocity);
+		}
+		protected void MaxspeedCheck() {
+			// Y
+			if ( Velocity.Y > Maxspeed ) {
+				Velocity.Y *= 0.0f;
+				Velocity.Y += Maxspeed;
+			} 
+			else if ( Velocity.Y < -Maxspeed ) {
+				Velocity.Y *= 0.0f;
+				Velocity.Y -= Maxspeed;
+			}
+			// X
+			if ( Velocity.X > Maxspeed ) {
+				Velocity.X *= 0.0f;
+				Velocity.X += Maxspeed;
+			} 
+			else if ( Velocity.X < -Maxspeed ) {
+				Velocity.X *= 0.0f;
+				Velocity.X -= Maxspeed;
+			}
 		}
 		protected void AddForce(Vector2 force)
 		{
@@ -60,17 +81,21 @@ namespace Movement
 			float spr_heigth = TextureSize.Y;
 
 			// Bouncing edges
-			if (Position.X + TextureSize.X / 2 > scr_width) {
+			if (Position.X + spr_width / 2 > scr_width) {
+				Position.X = scr_width - spr_width / 2;
 				Velocity.X *= -1;
 			} 
-			else if (Position.X - TextureSize.X / 2 < 0) {
+			else if (Position.X - spr_width / 2 < 0) {
+				Position.X = 0 + spr_width / 2;
 				Velocity.X *= -1;
 			}
 
-			if (Position.Y + TextureSize.Y / 2 > scr_height) {
+			if (Position.Y + spr_heigth / 2 > scr_height) {
+				Position.Y = scr_height - spr_heigth / 2;
 				Velocity.Y *= -1;
 			} 
-			else if (Position.Y - TextureSize.Y / 2 < 0) {
+			else if (Position.Y - spr_heigth / 2 < 0) {
+				Position.Y = 0 + spr_heigth / 2;
 				Velocity.Y *= -1;
 			}
 
@@ -84,18 +109,18 @@ namespace Movement
 			float spr_heigth = TextureSize.Y;
 
 			// Wrap Edges
-			if (Position.X - TextureSize.X / 2 > scr_width) {
+			if (Position.X - (TextureSize.X / 2) > scr_width) {
 				Position.X -= scr_width + TextureSize.X;
 			}
-			if (Position.X + TextureSize.X / 2 < 0) {
+			if (Position.X + (TextureSize.X / 2) < 0) {
 				Position.X += scr_width + TextureSize.X;
 			}
 			
-			if (Position.Y - TextureSize.Y / 2 > scr_height) {
+			if (Position.Y - (TextureSize.Y / 2) > scr_height) {
 				Position.Y -= scr_height + TextureSize.Y;
 			}
-			if (Position.Y + TextureSize.Y / 2 < 0) {
-				Position.Y += 0 + TextureSize.Y;
+			if (Position.Y + (TextureSize.Y / 2) < 0) {
+				Position.Y += scr_height + TextureSize.Y;
 			}
 		}
 		protected void Follow(float deltaTime) 
@@ -106,7 +131,7 @@ namespace Movement
 
 			// normalize the magnitude of direction and make it any length we want
 			Vector2.Normalize(direction);
-			direction *= 1.0f;
+			direction *= 20.0f;
 			Acceleration = direction;
 		}
 		protected void PointToMouse(float deltaTime)
@@ -118,6 +143,17 @@ namespace Movement
 			// use the inverse tangent to get an angle in degrees 
 			// set the rotation to the calculated angle
 			double angle = System.Math.Atan2(direction.Y, direction.X);
+			Rotation = angle;
+		}
+		protected void PointToMotion(float deltaTime)
+		{
+			// get mouse position & the direction the mouse is in relative to the object
+			Vector2 mouse = Raylib.GetMousePosition();
+			Vector2 direction = mouse - Position;
+
+			// use the inverse tangent to get an angle in degrees 
+			// set the rotation to the calculated angle
+			double angle = System.Math.Atan2(Velocity.Y, Velocity.X);
 			Rotation = angle;
 		}
 	}

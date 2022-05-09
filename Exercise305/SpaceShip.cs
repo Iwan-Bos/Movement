@@ -32,6 +32,7 @@ namespace Movement
 		{
 			rotSpeed = (float)Math.PI; // rad/second
 			thrustForce = 500f;
+			Maxspeed = 99999999999999999999999.0f;
 
 			Position = new Vector2(Settings.ScreenSize.X / 2, Settings.ScreenSize.Y / 2);
 			Color = Color.YELLOW;
@@ -40,8 +41,15 @@ namespace Movement
 		// Update is called every frame
 		public override void Update(float deltaTime)
 		{
-			Move(deltaTime);
 			WrapEdges();
+			Move(deltaTime);
+
+			Console.Clear();
+			Console.WriteLine("Rot: " + Rotation * 180);
+			Console.WriteLine("Acc X: " + thrustForce * Math.Cos(Convert.ToSingle(Rotation)));
+			Console.WriteLine("Acc Y: " + thrustForce * Math.Sin(Convert.ToSingle(Rotation)));
+			Console.WriteLine("Velocity X: " + Velocity.X);
+			Console.WriteLine("Velocity Y: " + Velocity.Y);
 		}
 
 		// your own private methods
@@ -49,7 +57,6 @@ namespace Movement
 		{
 			Rotation += rotSpeed * deltaTime;
 		}
-
 		public void RotateLeft(float deltaTime)
 		{
 			Rotation -= rotSpeed * deltaTime;
@@ -57,15 +64,21 @@ namespace Movement
 
 		public void Thrust()
 		{
-			// TODO implement
 			Color = Color.ORANGE;
-			// use thrustForce somewhere here
+			Acceleration.X += thrustForce * Convert.ToSingle(Math.Cos(Rotation));
+			Acceleration.Y += thrustForce * Convert.ToSingle(Math.Sin(Rotation));
 		}
-
-		public void NoThrust()
+		public void Brake(float deltaTime)
 		{
-			Color = Color.YELLOW;
+			Color = Color.BLUE;
+			// Acceleration.X -= brakeForce * Convert.ToSingle(Math.Cos(Rotation));
+			// Acceleration.Y -= brakeForce * Convert.ToSingle(Math.Sin(Rotation));
+			// if (Velocity.X == 0.0f) { Acceleration.X = 0.0f; }
+			// if (Velocity.Y == 0.0f) { Acceleration.Y = 0.0f; }
+			Velocity *= 0.8f * deltaTime;
 		}
+		public void NoThrust() { Color = Color.YELLOW; }
+		public void NoBrake() { Color = Color.YELLOW; }
 
 	}
 }

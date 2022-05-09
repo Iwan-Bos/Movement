@@ -22,45 +22,35 @@ Methods:
 
 namespace Movement
 {
-	class Particle : SpriteNode
+	class Particle : MoverNode
 	{
-		// your private fields here (add Velocity, Acceleration, and MaxSpeed)
-		
+		// variables
+		float lifespan;
 
 		// constructor + call base constructor
 		public Particle(float x, float y, Color color) : base("resources/spaceship.png")
 		{
 			Position = new Vector2(x, y);
+			Acceleration = new Vector2();
+			Velocity = new Vector2();
+
 			Scale = new Vector2(0.25f, 0.25f);
 			Color = color;
+			lifespan = 255.0f;
 		}
 
 		// Update is called every frame
 		public override void Update(float deltaTime)
 		{
-			Move(deltaTime);
 			WrapEdges();
+			Move(deltaTime);
+			lifespan -= 2.0f;
 		}
 
-		// your own private methods
-		private void Move(float deltaTime)
+		private bool IsDead() 
 		{
-			// TODO implement
-			// Position += Velocity * deltaTime;
-		}
-
-		private void WrapEdges()
-		{
-			float scr_width = Settings.ScreenSize.X;
-			float scr_height = Settings.ScreenSize.Y;
-			float spr_width = TextureSize.X;
-			float spr_heigth = TextureSize.Y;
-
-			// TODO implement...
-			if (Position.X > scr_width)
-			{
-				// ...
-			}
+			if (lifespan <= 0) { return true; }
+			return false;
 		}
 
 	}

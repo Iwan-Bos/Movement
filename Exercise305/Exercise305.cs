@@ -37,6 +37,12 @@ namespace Movement
 			if (Raylib.IsKeyReleased(KeyboardKey.KEY_UP)) {
 				spaceship.NoThrust();
 			}
+			if (Raylib.IsKeyDown(KeyboardKey.KEY_DOWN)) {
+				spaceship.Brake(deltaTime);
+			}
+			if (Raylib.IsKeyReleased(KeyboardKey.KEY_DOWN)) {
+				spaceship.NoBrake();
+			}
 		}
 
 	} // class

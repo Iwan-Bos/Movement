@@ -36,7 +36,8 @@ namespace Movement
 		public override void Update(float deltaTime)
 		{
 			Follow(deltaTime);
-			PointToMouse(deltaTime);
+			PointToMotion(deltaTime);
+			WrapEdges();
 			Move(deltaTime);
 		}
 		
